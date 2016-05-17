@@ -11,7 +11,7 @@
 	margin-bottom:15px;
 	
 	.be-logo {
-		background-image:url("/svg/be-logo.svg");
+		background-image:url("../static/svg/be-logo.svg");
 		background-repeat: no-repeat;
 		background-position: 50% 50%;
 	}
@@ -21,7 +21,7 @@
 		  rgba(0, 201, 137, 0.45), 
 		  rgba(0, 201, 137, 0.45)
 		),
-		url("/images/dore_squares.jpg") -55px -20px;
+		url("../static/images/dore_squares.jpg") -55px -20px;
 		background-repeat:no-repeat;
 	}
 	.creation {
@@ -32,7 +32,7 @@
 		  $RED_TRANS
 		),
 		/* bottom, image */
-		url("/images/dore_squares.jpg") 50% 0;
+		url("../static/images/dore_squares.jpg") 50% 0;
 	}
 	.moses {
 		background: 
@@ -42,7 +42,7 @@
 		  rgba(0, 110, 189, 0.45)
 		),
 		/* bottom, image */
-		url("/images/dore_squares.jpg") -900px 0;
+		url("../static/images/dore_squares.jpg") -900px 0;
 	}
 	.paul {
 		background:  
@@ -51,7 +51,7 @@
 		  rgba(255, 182, 87, 0.45)
 		),
 		/* bottom, image */
-		url("/images/dore_squares.jpg") -900px -600px;
+		url("../static/images/dore_squares.jpg") -900px -600px;
 	}
 	.jerusalem {
 		background: 
@@ -61,7 +61,7 @@
 		  rgba(0, 201, 137, 0.45)
 		),
 		/* bottom, image */
-		url("/images/dore_squares.jpg");
+		url("../static/images/dore_squares.jpg");
 		background-position: 50% 100%;
 	}
 	.square {

@@ -4,29 +4,40 @@ import Search from './Search';
 import VerseSelector from './VerseSelector';
 import BibleActionCreators from '../../actions/BibleActionCreators';
 import SearchActionCreators from '../../actions/SearchActionCreators';
+import BibleStore from '../../stores/BibleStore';
+import BibleChapterStore from '../../stores/BibleChapterStore';
 import SearchStore from '../../stores/SearchStore';
 
 class Navigation extends React.Component {
-
-    constructor(props) {
-		super(props);
-		this.state = this._getNavState();		
-	  }
- 	
-	_getNavState() {		
+	
+	componentWillMount(){
+		this.state = this._getState();
+	}
+	
+	_getState() {
 		return {
-			search: SearchStore.getAll()
+			search: SearchStore.getAll(),
+			chapter: BibleChapterStore.getAll(),
+			bible: BibleStore.getAll()
 		};
 	}
-	
+
 	componentDidMount(){	
-		this.changeListener = this._onChange.bind(this);
-		SearchStore.addChangeListener(this.changeListener);		
+		this.changeListener = this._onChange.bind(this);	
+		BibleStore.addChangeListener(this.changeListener);
+		BibleChapterStore.addChangeListener(this.changeListener);    
+		SearchStore.addChangeListener(this.changeListener);
 	}
 	
-	_onChange(){		
-		let navState = this._getNavState();
-		this.setState(navState);
+	componentWillUnmount(){
+		BibleStore.removeChangeListener(this._onChange);
+		BibleChapterStore.removeChangeListener(this._onChange);
+		SearchStore.removeChangeListener(this._onChange);
+	}
+	
+	_onChange(){	
+		let newState = this._getState();
+		this.setState(newState);		
 	}
 	
   render() {
@@ -37,23 +48,18 @@ class Navigation extends React.Component {
 	};
 
     return (	
-		<div className="row blueBG" style={{marginBottom:'25p', textAlign:'center'}}>
-			<div className="container">
-				<div className="col-xs-12">	
-					<Link to={!this.props.chapter.previous[1] ? "":this.props.chapter.previous[1]} className="btn btn-default" style={styles.previous}>
-						<span className="glyphicon glyphicon-chevron-left"></span>
-					</Link>
+		<div className="blueBG" style={{marginBottom:'25p', textAlign:'center'}}>
+			<Link to={!this.state.chapter.previous[1] ? "":this.state.chapter.previous[1]} className="btn btn-default" style={styles.previous}>
+				<span className="glyphicon glyphicon-chevron-left"></span>
+			</Link>
 
-					<Search term={this.props.search} changeHandler={this.searchChangeHandler} submitHandler={this.bibleSearchSubmitHandler.bind(this)}/>
+			<Search term={this.state.search.term} changeHandler={this.searchChangeHandler} submitHandler={this.bibleSearchSubmitHandler.bind(this)}/>
 
-					<Link to={!this.props.chapter.next[1] ? "":this.props.chapter.next[1]}  className="btn btn-default" style={styles.next} onClick={this.props.getNextHandler}>
-						<span className="glyphicon glyphicon-chevron-right"></span>
-					</Link>
-							
-					<VerseSelector books={this.props.books}/>
+			<Link to={!this.state.chapter.next[1] ? "":this.state.chapter.next[1]}  className="btn btn-default" style={styles.next} onClick={this.props.getNextHandler}>
+				<span className="glyphicon glyphicon-chevron-right"></span>
+			</Link>
 					
-				</div>
-			</div>
+			<VerseSelector books={this.state.bible.books}/>
 		</div>
     )
   }

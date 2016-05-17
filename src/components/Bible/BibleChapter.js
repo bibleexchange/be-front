@@ -4,16 +4,51 @@ import NoteComponent from './Note';
 import { Link } from "react-router";
 import { Grid, Row, Col } from 'react-bootstrap';
 
+Array.prototype.sortOn = function(key){
+
+	this.sort(function(a, b){
+		if(a[key] < b[key]){
+			return -1;
+		}else if(a[key] > b[key]){
+			return 1;
+		}
+		return 0;
+	});
+	
+	return this;
+};
+
 class BibleChapter extends React.Component {
  
   render() {
-	const BibleVerseComponents = this.props.verses.map((verse)=>{
-		return <BibleVerseComponent key={verse.id} {...verse} />;
-	});
+	let BibleVerseComponents = null;
+	let NoteComponents = null;
+	var v = null;
+	let verseLink = null;
 	
-	const NoteComponents = this.props.notes.map((note)=>{
-		return <NoteComponent key={note.id} {...note} />;
-	});
+	if(this.props.verses){
+		BibleVerseComponents = this.props.verses.map((verse)=>{
+			return <BibleVerseComponent key={verse.id} {...verse} />;
+		});
+	}
+	
+	if(this.props.notes){
+		NoteComponents = this.props.notes.sortOn('verse').map((note)=>{
+			let verse = note.verse;
+			if(!verse.url){
+				verse = JSON.parse(verse);
+			}
+			
+			if(v !== verse.v){
+				verseLink = <div><hr /><Link to={verse.url? verse.url:"/t"}><sup>v. {verse.v}</sup></Link><hr /></div>;
+				v = verse.v;
+			}else{
+				verseLink = null;
+			}	
+			
+			return <div>{verseLink} <NoteComponent key={note.id} {...note} /></div>;
+		});
+	}
 	
     return (
 		<Grid id="bible">

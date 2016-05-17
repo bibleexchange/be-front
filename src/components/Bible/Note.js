@@ -4,20 +4,16 @@ import { safeUrl } from 'util/MyHelpers';
 
 class Note extends React.Component {
  
-  render() {	
-
-  console.log(this.props);
-  
+  render() {    
     return (
-		<div>
-			<sup>{this.props.verse}</sup>
-			{this.chooseView(this.props)}		
+		<div style={{marginBottom:"15px"}}>
+			{this.chooseView(this.props)}
 		</div>
     )
   }
 
 	chooseView(o){
-		
+	
 		switch(o.object_type){
 			case "Recording":
 				let recording = JSON.parse(o.relatedObject);
@@ -27,17 +23,29 @@ class Note extends React.Component {
 				let link = JSON.parse(o.relatedObject);
 				return <ExternalLink data={link[0]} note={o}/>;
 				break;
+			case "BibleVerse":
+				let verse = JSON.parse(o.relatedObject);
+				return (<div><span className="glyphicon glyphicon-link"></span><Link to={verse.url}> {verse.reference}</Link> <p>{verse.t}</p></div>);
+				break;
 			default:
-				return null;
+				return (<Comment {...o} />);
 		}
 		
 	}  
+ 
+}
+
+class Comment extends React.Component {
+  render() {
+    return (
+		<p><i className="glyphicon glyphicon-comment"></i> {this.props.body} -- {this.props.user.username}</p>
+    )
+  }
   
 }
 
 class Recording extends React.Component {
-  render() {	  
-  console.log(this.props);
+  render() {
     return (
 		<p><i className="glyphicon glyphicon-headphones"></i> <Link to={"/notes/"+this.props.noteID+"#"+safeUrl(this.props.data.title)} >{this.props.data.title}</Link></p>
     )

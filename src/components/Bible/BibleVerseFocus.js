@@ -8,7 +8,7 @@ class BibleVerseFocus extends React.Component {
 	let verse = this.props.data;
 	
     return (
-		<div id="verse-focus" className="container">
+		<div id="verse-focus" >
 			<hr />	
 			<Link data={verse.chapterURL} to={!verse.chapterURL ? "":verse.chapterURL} className="btn btn-success">
 				{ verse.reference }

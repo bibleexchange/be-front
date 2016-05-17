@@ -36,15 +36,14 @@ class BibleVerseStore extends BaseStore {
 				this.logChange(payload);
 				this._initialize();
 				this.emitChange();
-			  break;			
+			  break;
 			
 			case ActionTypes.GET_CHAPTER:
-				waitFor([BibleChapterStore.dispatchToken]);
-				this.logChange(payload);
-				this._initialize();
-				this.emitChange();
-				break;
-				
+			  this.logChange(payload);
+			  this.updateVerse(payload.action.body.data.biblechapters[0].verses[0]);
+			  this.emitChange();
+			  break;
+			
 			default:
 			  return true;
 		  }
@@ -119,18 +118,19 @@ class BibleVerseStore extends BaseStore {
 	}
 	
 	_initialize(){
-		this._id = null;
-		this._b = null;
-		this._c = null;
-		this._v = null;
-		this._body = null;
-		this._reference = null;
-		this._url = null;
-		this._chapterURL = null;
-		this._bible_chapter_id = null;
-		this._notes = [];
+			
+			this._id = null;
+			this._b = null;
+			this._c = null;
+			this._v = null;
+			this._body = null;
+			this._reference = null;
+			this._url = null;
+			this._chapterURL = null;
+			this._bible_chapter_id = null;
+			this._notes = [];
 
-		this._errors = [];
+			this._errors = [];
 	}
 	
 	fetchVerse(){

@@ -18,7 +18,7 @@
   "scripts": {
     "test": "",
     "start": "node server",
-    "build": "rimraf dist && set NODE_ENV=development && webpack --config ./webpack.production.config.js --progress --profile --colors",
+    "build": "rimraf dist && webpack --config ./webpack.production.config.js --progress --profile --colors",
     "eslint": "eslint .",
     "jscs": "jscs ."
   },

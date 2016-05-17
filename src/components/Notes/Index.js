@@ -179,7 +179,4 @@ class SoundCloudPlayer extends React.Component {
   
 }
 
-
-
-
 module.exports = Index;

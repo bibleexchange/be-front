@@ -38,8 +38,8 @@ export default (
 		<Route name="signup" path="/signup" component={Signup}></Route>
 		<Route path="search/:term(/:page)" component={Search} ></Route>				
 		<Route path="bible" component={Bible} >
-			<Route path=":book/:chapter/:verse" component={BibleVersePage}></Route>
 			<Route path=":book/:chapter" component={BibleChapterPage}></Route>
+			<Route path=":book/:chapter/:verse" component={BibleVersePage}></Route>
 		</Route>
 		<Route path="user" component={UserLibrary} >
 			<Route path="notebook/:id" component={NotebookEditor}></Route>
@@ -47,13 +47,13 @@ export default (
 			<Route path="note/:note/edit" component={NoteEditor}></Route>
 		</Route>
 
-		<Route path="library" component={Library}></Route>
+		<Route path="notebooks" component={Library}></Route>
 		
-		<Route path="library" >
+		<Route path="notebooks">
 			<Route path=":notebook" component={Notebook} />
 			<Route path=":notebook/:note" component={Note2} />
 		</Route>
-		
+
 		<Route path="notes/:note" component={Note} />
 		
 		<Route path="*" component={NoMatch}/>

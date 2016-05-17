@@ -14,9 +14,10 @@ class NoteStore extends BaseStore {
 		this._object_type = false;
 		this._object = false;
 		this._bible_verse_id = false;
+		this._user = false;
 		
 		this._error = false;
-		this._loading = false;
+		this._loading = true;
 		
 		this.meta = {
 			name : "NoteStore"
@@ -37,6 +38,8 @@ class NoteStore extends BaseStore {
 			case ActionTypes.NOTE_SUCCESS:
 				this.logChange(payload);
 				this._setNote(payload.action.body.data.notes[0]);
+				this._loading = false;
+				this._error = false;
 				this.emitChange();
 			  break;
 			
@@ -71,12 +74,10 @@ class NoteStore extends BaseStore {
 		console.log(data);
 		this._id = data.id;
 		this._body = data.body;
+		this._user = data.user;
 		this._object_type = data.object_type;
 		this._object = JSON.parse(data.relatedObject)[0];
-		this._bible_verse_id = data.bible_verse_id;
-		
-		this._error = false;
-		this._loading = false;		
+		this._bible_verse_id = data.bible_verse_id;	
 	}
 	
 	_getBody(file){

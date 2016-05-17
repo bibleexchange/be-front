@@ -35,10 +35,11 @@ class BibleChapterPage extends React.Component {
 	componentWillReceiveProps(newProps){
 		BibleActionCreators.getChapterByReference(newProps.params.book, newProps.params.chapter);
 	}
-	
+
 	_onChange(){		
 		let newState = this._getState();
-		this.setState(newState);		
+		this.setState(newState);	
+		if(!this.props.params.book && newState.chapter.url){browserHistory.push(newState.chapter.url);}			
 	}
 	
 	componentWillUnmount(){

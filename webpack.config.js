@@ -46,15 +46,15 @@ module.exports = {
 	loader: "url?limit=10000"
 	},
 	{
-	test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
+	test: /\.(ttf|eot)(\?[\s\S]+)?$/,
 	loader: 'file'
 	},
-	{test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [
-            'file?hash=sha512&digest=hex&name=[hash].[ext]',
-            'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
-        ]
-    }
+	{
+	  // When you encounter images, compress them with image-webpack (wrapper around imagemin)
+	  // and then inline them as data64 URLs
+	  test: /\.(png|jpg|svg)/,
+	  loaders: ['url', 'image-webpack'],
+	}
 	]
   },
   node: {fs: 'empty', net: 'empty', tls: 'empty'},

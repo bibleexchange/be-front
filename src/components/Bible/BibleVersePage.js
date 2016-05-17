@@ -3,8 +3,7 @@ import { browserHistory, Link } from "react-router";
 import Navigation from './Navigation';
 import Reader from './Reader';
 import BibleVerseFocus from './BibleVerseFocus';
-import NotesList from '../NotesList';
-
+import NoteComponent from './Note';
 import BibleActionCreators from '../../actions/BibleActionCreators';
 import SearchActionCreators from '../../actions/SearchActionCreators';
 
@@ -45,11 +44,18 @@ class BibleVersePage extends React.Component {
 	}
 	
   render() {
+	let NoteComponents = null;
+	
+	if(this.state.verse.notes && this.state.verse.notes !== null){
+		NoteComponents = this.state.verse.notes.map((note)=>{
+			return <NoteComponent key={note.id} {...note} verse={this.state.verse}/>;
+		});
+	}
 	
     return (
-      <div>
+      <div className="container">
 		<BibleVerseFocus data={this.state.verse} />
-		<NotesList verse={this.state.verse} notes={ !this.state.verse.notes ? []:this.state.verse.notes}/>
+		{NoteComponents}
       </div>
     )
   }

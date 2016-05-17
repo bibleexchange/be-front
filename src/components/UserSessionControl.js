@@ -19,6 +19,7 @@ class UserLoggedIn extends React.Component {
 			<img src={user.gravatar} alt={user.firstname + " " + user.lastname} style={{paddingRight:'15px'}}/>
 			Logout
 		</Link></NavItem>
+		<NavItem eventKey={3} title="Item">[NOTIFICATIONS HERE]</NavItem>
 	 </Nav>
     );
   }

@@ -50,7 +50,7 @@ class RequestService {
 		
 		let verseFields = "verses{id,body,b,c,v,reference,url,chapterURL}";
 		let bookFields = "book{id,n,t,g}";
-		let noteFields = "notes{id,body,object_type,relatedObject,verse}";
+		let noteFields = "notes{id,body,object_type,relatedObject,verse,user{username}}";
 		
 		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchBibleChapter{biblechapters(reference:\""+ref+"\"){id,reference,next,previous,orderBy,"+verseFields+","+bookFields+","+noteFields+"}}";
 		
@@ -64,20 +64,8 @@ class RequestService {
 	}
 	
 	getChapter(id) {
-		let URL = AppConstants.BASE_URL+ "/graphql?query=query+FetchBibleChapter{biblechapters(id:\""+id+"\"){id,next,previous,orderBy,reference,url,book{id,n},verses{id,v,body,url}}}";
+		let URL = AppConstants.BASE_URL+ "/graphql?query=query+FetchBibleChapter{biblechapters(id:\""+id+"\"){id,next,previous,orderBy,reference,url,book{id,n},verses{id,b,c,v,body,url}}}";
 	
-		let options = {
-			url: URL,
-			data: {},
-			method: "GET"
-		};
-		
-		return this.get(options);
-	}
-	
-	addChapter(id) {
-		let URL = AppConstants.BASE_URL+ "/graphql?query=query+FetchBibleChapter{biblechapters(id:\""+id+"\"){id,next,previous,orderBy,reference,url,book{id,n},verses{id,v,body,url}}}";
-
 		let options = {
 			url: URL,
 			data: {},
@@ -90,7 +78,7 @@ class RequestService {
 	////VERSES
 	
 	bibleVerseByReference(ref) {
-		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchBibleVerse{bibleverses(reference:\""+ref+"\"){id,body,b,c,v,reference,url,chapterURL,notes{id,body,user{username}}}}";
+		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchBibleVerse{bibleverses(reference:\""+ref+"\"){id,body,b,c,v,reference,url,chapterURL,notes{id,body,object_type,relatedObject,user{username}}}}";
 		console.log(URL);
 		
 		let options = {
@@ -145,23 +133,36 @@ class RequestService {
 		return this.get(options);
 	} 
 	
-	github(path, dir=true){
+	getNotebooks(page=1){
 		
-		let base = "https://api.github.com/repos/bibleexchange/courses/contents";
+		let object = "page: \""+page+"\"";
+		let fields = "id,title,bible_verse_id,notes{id,body},user{id},url";
 		
-		if(!dir){
-			base = "https://raw.githubusercontent.com/bibleexchange/courses/master/";
-		}
-		
-		let URL = base+path;
-		
+		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchNotebooks{notebooks("+object+"){"+fields+"}}";
+
 		let options = {
 			url: URL,
 			data: {},
 			method: "GET"
 		};
+
+		return this.get(options);
+	}
+	
+	getNotebook(id){
 		
-		this.get(options);
+		let object = "id: \""+id+"\"";
+		let fields = "id,title,bible_verse_id,notes{id,body,verse},user{id},url";
+		
+		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchNotebook{notebooks("+object+"){"+fields+"}}";
+
+		let options = {
+			url: URL,
+			data: {},
+			method: "GET"
+		};
+
+		return this.get(options);
 	}
 
 ///MASTER SEND GET REQUEST:

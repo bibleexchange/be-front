@@ -21,16 +21,16 @@ class BibleStore extends BaseStore {
  
 		  switch(payload.type){			  
 			
-			case ActionTypes.GET_CHAPTER:
-				this.logChange(payload);
-				this._nav.unshift({url: payload.action.body.data.biblechapters[0].url, title:payload.action.body.data.biblechapters[0].reference});
-				this.emitChange();
-			  break;
-			
 			case ActionTypes.GET_VERSE:
 				this.logChange(payload);
-				this._nav.unshift({url:payload.action.body.data.bibleverses[0].url, title:payload.action.body.data.bibleverses[0].reference});
+				this.addVerse(payload.action.body.data.bibleverses[0]);
 				this.emitChange();
+			  break;	
+			
+			case ActionTypes.GET_CHAPTER:
+			  this.logChange(payload);
+			  this.addVerse(payload.action.body.data.biblechapters[0].verses[0]);
+			  this.emitChange();
 			  break;
 			
 			default:
@@ -39,6 +39,38 @@ class BibleStore extends BaseStore {
 	  }
 	
 //GETTERS:	
+	/*
+	
+	var local = localStorage.getItem('versestore');
+		localStorage.setItem("versestore", JSON.stringify(this.getAll()));
+		if(local){
+	
+	*/
+	
+	addVerse(data){
+		console.log(data);
+		let newVerse = {
+			id: data.id,
+			b: data.b,
+			c: data.c,
+			v: data.v,
+			body:  data.body,
+			reference:  data.reference,
+			url:  data.url,
+			chapterURL:  data.chapterURL,
+			bible_chapter_id: data.bible_chapter_id,
+			notes: data.notes
+		};
+
+		this._nav.unshift(newVerse);
+	}
+	
+	getAll(){
+		return {
+			nav: this._nav,
+			books: this._books
+			};
+	}
 	
 	get books(){
 		return this._books;

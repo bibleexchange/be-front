@@ -12,8 +12,10 @@ require('../stylesheets/banner.scss');
 require('../stylesheets/images.scss');
 require('../stylesheets/print.scss');
 require('../stylesheets/typography.scss');
-require('../../node_modules/bootstrap/dist/css/bootstrap.css');
- 
+require('../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss');
+
+var beLogo = require('../static/images/be_logo.png');
+
 class App extends React.Component {
 
   componentWillMount(){
@@ -55,7 +57,7 @@ class App extends React.Component {
 
   render() {  
 	let title = AppConstants.SITE_TITLE;
-
+	
     return (
       <div> 
 	    <Navbar animated staticTop fluid style={{marginBottom: 0}}>
@@ -67,7 +69,7 @@ class App extends React.Component {
 				</button>
 			  <Navbar.Brand>
 				 <Link to="/">
-					<img className="pull-left" style={{marginLeft:"15px"}} src="/images/be_logo.png" alt="Bible exchange logo" /> 
+					<img className="pull-left" style={{marginLeft:"15px"}} src={beLogo} alt="Bible exchange logo" /> 
 					{title}
 				  </Link>
 			  </Navbar.Brand>

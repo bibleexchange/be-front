@@ -1,32 +1,27 @@
 import React from 'react';
-import ONotebookStore from '../../stores/ONotebookStore';
-import ActionCreators from '../../actions/LibraryActionCreators';
+import NotebookStore from '../../stores/NotebookStore';
+import LibraryActionCreators from '../../actions/LibraryActionCreators';
 import Loading from '../Loading';
-import GithubNotebook from './GithubNotebook';
 import { Link } from 'react-router';
+import Template from './Template';
 
 class Notebook extends React.Component {
 
 	componentWillMount(){
 		this.state = this._getState();
-				
-		if(ONotebookStore.getAll().manifestFile){
-			ActionCreators.githubNotebookManifest(this.props.params.notebook+"/be-notebook.json");
-		}else{
-			ActionCreators.githubNotebook(this.props.params.notebook);
-		}
+		LibraryActionCreators.getNotebook(this.props.params.notebook.split("-")[0]);
 	}
 	
 	_getState() {
 		return {
-			notebook:ONotebookStore.getAll(),
+			notebook:NotebookStore.getAll(),
 			content: ''
 		};
 	}
 
 	componentDidMount(){	
 		this.changeListener = this._onChange.bind(this);	
-		ONotebookStore.addChangeListener(this.changeListener);
+		NotebookStore.addChangeListener(this.changeListener);
 	}
 	
 	_onChange(){	
@@ -35,12 +30,12 @@ class Notebook extends React.Component {
 	}
 	
 	componentWillUnmount(){
-		ONotebookStore.removeChangeListener(this.changeListener);
+		NotebookStore.removeChangeListener(this.changeListener);
 	}
 	
 	componentWillReceiveProps(newProps){
-		if(newProps.notebook !== this.props.notebook){
-			ActionCreators.githubNotebookManifest(newProps.notebook+"/be-notebook.json");
+		if(newProps.notebook !== this.props.params.notebook){
+			LibraryActionCreators.getNotebook(newProps.params.notebook.split("-")[0]);
 		}
 	}
 	
@@ -58,18 +53,7 @@ class Notebook extends React.Component {
 	}
 
     return (
-		<div>
-			<hr />
-				<div className="container">
-					<Link to="/library" > BACK </Link>
-				</div>
-			<hr />
-			
-			<div className="container">
-				{this.state.content}
-			</div>	
-		
-		</div>
+		<div>{this.state.content}</div>
     )
   }
 
@@ -92,7 +76,7 @@ class Notebook extends React.Component {
 		}
 	}
 	success(){
-		this.state.content = <GithubNotebook notebook={this.state.notebook} />;
+		this.state.content = <Template data={this.state.notebook.data} />;
 	}
 	
 }
