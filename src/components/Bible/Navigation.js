@@ -11,7 +11,8 @@ import SearchStore from '../../stores/SearchStore';
 class Navigation extends React.Component {
 	
 	componentWillMount(){
-		this.state = this._getState();
+		this.state = this._getState();	
+		if(BibleStore.getAll().nav.length < 1){BibleActionCreators.getRandomChapter();}
 	}
 	
 	_getState() {
@@ -46,7 +47,7 @@ class Navigation extends React.Component {
 		next:{border:'none', background:'transparent'},
 		previous:{border:'none', background:'transparent'}
 	};
-
+	
     return (	
 		<div className="blueBG" style={{marginBottom:'25p', textAlign:'center'}}>
 			<Link to={!this.state.chapter.previous[1] ? "":this.state.chapter.previous[1]} className="btn btn-default" style={styles.previous}>

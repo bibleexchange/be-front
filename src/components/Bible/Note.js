@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { safeUrl } from 'util/MyHelpers';
+import Helper from '../../util/MyHelpers';
 
 class Note extends React.Component {
  
@@ -47,7 +47,7 @@ class Comment extends React.Component {
 class Recording extends React.Component {
   render() {
     return (
-		<p><i className="glyphicon glyphicon-headphones"></i> <Link to={"/notes/"+this.props.noteID+"#"+safeUrl(this.props.data.title)} >{this.props.data.title}</Link></p>
+		<p><i className="glyphicon glyphicon-headphones"></i> <Link to={"/notes/"+this.props.noteID+"#"+Helper.safeUrl(this.props.data.title)} >{this.props.data.title}</Link></p>
     )
   }
   

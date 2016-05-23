@@ -60,7 +60,22 @@ class NotebookStore extends BaseStore {
 	}
 	
 	updateNotebook(data){
-		this._data = data;	
+
+		data.notes.map(function(n,k){
+			
+			let testFirst = JSON.parse(n.relatedObject);
+			
+			if(Array.isArray(testFirst)){
+				data.notes[k].relatedObject = testFirst[0];
+			}else{
+				data.notes[k].relatedObject = testFirst;
+			}
+			
+			data.notes[k].verse = JSON.parse(n.verse);
+		});
+		
+		this._data = data;
+		
 	}
 	
 }

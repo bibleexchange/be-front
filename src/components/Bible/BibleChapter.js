@@ -46,7 +46,7 @@ class BibleChapter extends React.Component {
 				verseLink = null;
 			}	
 			
-			return <div>{verseLink} <NoteComponent key={note.id} {...note} /></div>;
+			return <div key={note.id+Math.random()}>{verseLink} <NoteComponent {...note} /></div>;
 		});
 	}
 	

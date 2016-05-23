@@ -11,7 +11,7 @@ import BibleVersePage from './components/Bible/BibleVersePage';
 import Dashboard from './components/Dashboard/Index';
 
 import Library from './components/Library/Index';
-import Notebook from './components/Library/Notebook';
+import Notebook from './components/Notebook/Index';
 import Note2 from './components/Library/Note';
 import Note from './components/Notes/Index';
 
@@ -50,8 +50,8 @@ export default (
 		<Route path="notebooks" component={Library}></Route>
 		
 		<Route path="notebooks">
-			<Route path=":notebook" component={Notebook} />
-			<Route path=":notebook/:note" component={Note2} />
+			<Route path=":notebook(/:note)" component={Notebook} />
+			<Route path=":no999tebook/:note" component={Note2} />
 		</Route>
 
 		<Route path="notes/:note" component={Note} />

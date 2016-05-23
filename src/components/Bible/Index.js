@@ -9,17 +9,11 @@ require('../../stylesheets/bible.scss');
  
 class BibleIndex extends React.Component {
 	
-	componentWillMount(){
-		if(BibleChapterStore.getAll().url === null && this.props.params.book === undefined){
-			BibleActionCreators.getRandomChapter();
-		}
-	}
-	
   render() {
 	
 	return (
       <div>			
-		<Navigation params={this.props.params} />
+		<Navigation />
 		{this.props.children}
       </div>
     )

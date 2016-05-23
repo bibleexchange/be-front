@@ -48,7 +48,6 @@ class BibleStore extends BaseStore {
 	*/
 	
 	addVerse(data){
-		console.log(data);
 		let newVerse = {
 			id: data.id,
 			b: data.b,

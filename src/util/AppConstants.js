@@ -11,7 +11,8 @@ const AppConstants = {
 	SIGNUP_URL: BASE_URL + 'users',
 	ENTER_KEY_CODE: 13,
 	SITE_TITLE: 'Bible Exchange',
-	IDB_SUPPORTED: idbSupported
+	IDB_SUPPORTED: idbSupported,
+	PORT:":3000"
 };
 
 export default AppConstants;

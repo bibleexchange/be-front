@@ -1,7 +1,7 @@
 import { dispatch, dispatchAsync } from '../util/AppDispatcher';
 import ActionTypes from '../util/ActionTypes';
 import RequestService from '../util/RequestService';
-import { getRandomBibleChapter } from '../util/MyHelpers';
+import Helpers from '../util/MyHelpers';
 
 String.prototype.ucfirst = function()
 {
@@ -42,7 +42,7 @@ export default {
 	
 	getRandomChapter: () => {
 		
-		var id = getRandomBibleChapter();
+		var id = Helpers.getRandomBibleChapter();
 		let promise = RequestService.getChapter(id);
 	
 		dispatchAsync(promise, {

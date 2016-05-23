@@ -4,15 +4,15 @@ import AppConstants from '../util/AppConstants';
 import RequestService from '../util/RequestService';
 
 export default {
-   	getNotebooks: (page) => {
+   	getNotebooks: (page,perPage) => {
 		
-		let promise = RequestService.getNotebooks(page);
+		let promise = RequestService.getNotebooks(page,perPage);
 			
 			dispatchAsync(promise, {
 			  request: ActionTypes.NOTEBOOKS_FETCH,
 			  success: ActionTypes.NOTEBOOKS_SUCCESS,
 			  failure: ActionTypes.NOTEBOOKS_FAILED
-			}, { page });
+			}, { page, perPage });
 		
 	},
 	

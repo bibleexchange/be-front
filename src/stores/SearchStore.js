@@ -28,7 +28,6 @@ class SearchStore extends BaseStore {
 			  break;
 			  
 			case ActionTypes.GET_CHAPTER:
-				waitFor([BibleChapterStore.dispatchToken]);
 				this.logChange(payload);
 				var ref = payload.action.body.data.biblechapters[0].reference;
 				var url = payload.action.body.data.biblechapters[0].url;
@@ -81,7 +80,6 @@ class SearchStore extends BaseStore {
 	get term(){
 		return this._term;
 	}
-////////////////////////////////////////////
 
 	changeTerm(newTerm){
 		this._term = newTerm;

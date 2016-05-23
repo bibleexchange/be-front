@@ -8,7 +8,7 @@ class LibraryStore extends BaseStore {
 		this.subscribe(() => this._registerToActions.bind(this));
 		
 		this._notebooks = [];
-		this._page = 1;
+		this._page = {};
 		this._error = false;
 		this._loading = true;
 		
@@ -23,8 +23,8 @@ class LibraryStore extends BaseStore {
 		  switch(payload.type){
 			case ActionTypes.NOTEBOOKS_SUCCESS:
 				this.logChange(payload);
-				this.addNotebook(payload.action.body.data.notebooks);
-				this._page = payload.action.action.page;
+				this.addNotebook(payload.action.body.data.notebooks, payload.action.page);
+				this.updatePage(payload.action.body.data.pageinfo);
 				this._error = false;
 				this._loading = false;
 				this.emitChange();
@@ -35,8 +35,10 @@ class LibraryStore extends BaseStore {
 		  }
 	  }
 	
-	addNotebook(data){
+	addNotebook(data, page){
+		
 		let newArray = this._notebooks.concat(data);
+		
 		this._notebooks = newArray;
 	}
 	
@@ -48,6 +50,11 @@ class LibraryStore extends BaseStore {
 			loading:this._loading
 		};
 	}	
+	
+	updatePage(data){
+		this._page = data;
+	}
+	
 }
 
 export default new LibraryStore();

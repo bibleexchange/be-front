@@ -1,13 +1,11 @@
 import React from 'react';
-import BibleStore from '../../stores/BibleStore';
 import Link from 'react-router/lib/Link';
 import ProfileStore from '../../stores/ProfileStore';
-import LibraryStore from '../../stores/LibraryStore';
 import SessionStore from '../../stores/SessionStore';
 import ThemeSquares from '../ThemeSquares';
 import SessionActionCreators from '../../actions/SessionActionCreators';
-import UserNavigation from './UserNavigation';
-import BibleNavigation from '../Bible/Navigation';
+import BibleMini from '../Bible/BibleMini';
+import Notebook from '../Library/Index';
 
 import { Grid, Row, Col } from 'react-bootstrap';
 
@@ -30,18 +28,14 @@ class DashboardIndex extends React.Component {
 		  user: {
 				session: SessionStore.getState(),
 				profile: ProfileStore.getState()
-				},
-		  bible: BibleStore.getAll(),
-		  library: LibraryStore.getAll()
+				}
 		};
   }
   
  componentDidMount() {
     this.changeListener = this._onChange.bind(this);
-	BibleStore.addChangeListener(this.changeListener);
     SessionStore.addChangeListener(this.changeListener);
 	ProfileStore.addChangeListener(this.changeListener);
-	LibraryStore.addChangeListener(this.changeListener);
   }
 
    _onChange() {
@@ -50,10 +44,8 @@ class DashboardIndex extends React.Component {
   }
 
   componentWillUnmount() {
-	BibleStore.removeChangeListener(this.changeListener);
     SessionStore.removeChangeListener(this.changeListener);
 	ProfileStore.removeChangeListener(this.changeListener);
-	LibraryStore.removeChangeListener(this.changeListener);
   }
 	
   render() {
@@ -61,7 +53,25 @@ class DashboardIndex extends React.Component {
     return (
 		<Grid fluid>
 			
-			{this.filler()}
+			 <Row>
+				<Col xs={12} md={6} >
+					<Link to="/bible"><h2 className="blueBG">Bible</h2></Link>
+					<BibleMini />
+				</Col>
+				<Col xs={12} md={6} >
+					<Link to="/notebooks"><h2 className="greenBG">Notebooks</h2></Link>
+					
+					<Notebook />
+					
+				</Col>
+			</Row>
+		  <Row>
+				<Col md={8} mdOffset={2}>
+					<div className="embed-container">
+						<iframe style={{width:"100%", minHeight:"300px"}} src="https://player.vimeo.com/video/120753625" frameBorder="0" webkitAllowuFullScreen="" mozAllowFullScreen="" allowFullScreen=""></iframe>
+					</div>
+				</Col>
+			</Row>
 			
 			<Row id="sub_be_banner" className="redBG">	
 				<h1>Your place for Bible study and conversation.</h1>
@@ -97,34 +107,6 @@ class DashboardIndex extends React.Component {
 		</Grid>
     )
   }
-  
-  filler(){
-
-	  if(this.state.bible.nav.length == 0){
-		  return (<div>
-			<Row>
-				<Col xs={12} md={6}>
-					<h2>Bible</h2>
-					<BibleNavigation params={this.props.params} />
-				</Col>
-				<Col xs={12} md={6}>
-					<h2>Notebooks</h2>
-					
-				</Col>
-			</Row>
-		  <Row>
-				<Col md={8} mdOffset={2}>
-					<div className="embed-container">
-						<iframe style={{width:"100%", minHeight:"300px"}} src="https://player.vimeo.com/video/120753625" frameBorder="0" webkitAllowuFullScreen="" mozAllowFullScreen="" allowFullScreen=""></iframe>
-					</div>
-				</Col>
-			</Row></div>);
-	  }else{
-		  return (<UserNavigation nav={{bible:this.state.bible.nav}} notebooks={this.state.library.notebooks} user={this.state.user} params={this.props.params}/>);
-	  }
-	  
-  }
-  
 }
 
 module.exports = DashboardIndex;

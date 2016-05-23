@@ -2,15 +2,15 @@ import React from 'react';
 import LibraryStore from '../../stores/LibraryStore';
 import LibraryActionCreators from '../../actions/LibraryActionCreators';
 import Loading from '../Loading';
-import NotebookListing from './NotebookListing';
+import NotebookListing from './Notebook';
 		
-class LinkedIndex extends React.Component {
+class LibraryIndex extends React.Component {
 
 	componentWillMount(){
 		this.state = this._getState();
-		LibraryActionCreators.getNotebooks(1);
+		LibraryActionCreators.getNotebooks(LibraryStore.getAll().page.currentPage,5);		
 	}
-	
+
 	_getState() {
 		return {
 			library:LibraryStore.getAll(),
@@ -22,7 +22,7 @@ class LinkedIndex extends React.Component {
 		this.changeListener = this._onChange.bind(this);	
 		LibraryStore.addChangeListener(this.changeListener);
 	}
-	
+
 	_onChange(){	
 		let newState = this._getState();
 		this.setState(newState);		
@@ -33,32 +33,28 @@ class LinkedIndex extends React.Component {
 	}
 	
 	componentWillReceiveProps(){
-		LibraryActionCreators.getNotebooks(1);
+		LibraryActionCreators.getNotebooks(1,5);
 	}
 	
   render() {
-	
-	let l = this.state.library;
+
 	let content = '';
 	
-	if(l.loading){
-		this.loading();
-	}else if(l.error){
-		this.error();
+	if(this.state.library.loading){
+		content = this.loading();
+	}else if(this.state.library.error){
+		content = this.error();
 	}else{
-		this.success();
+		content = this.success();
 	}
 
     return (
 		<div id="minimal-list" className="container" >	
-			<div>
-				<h1>Library</h1>				
-				<ul>
+			<div>		
 				{this.state.content}
 				
-				<button onClick={this.loadMore.bind(this)}>Load More</button>
+				<Pagination loadMore={this.loadMore.bind(this)} />
 				
-				</ul>
 			</div>			
 		</div>
     )
@@ -66,22 +62,63 @@ class LinkedIndex extends React.Component {
 
 	loading(){
 		console.log('loading data...');
-		this.state.content = <h2 style={{textAlign:'center'}}>Loading...<Loading /></h2>;
+		return <h2 style={{textAlign:'center'}}>Loading...<Loading /></h2>;
 	}
 	error(){
 		console.log('Something went wrong :(', this.state.repos.error);
-		this.state.content = this.state.repos.error.message;
+		return this.state.repos.error.message;
 	}
 	success(){
+
 		this.state.content = this.state.library.notebooks.map((n)=>{
-				return <NotebookListing key={Math.random()} data={n} />;
+				return <NotebookListing key={Math.random()+n.id} data={n} />;
 			});
 	}
 	
 	loadMore(){
-		LibraryActionCreators.getNotebooks(this.state.library.page+1);
+		LibraryActionCreators.getNotebooks(this.state.library.page.currentPage+1,5);
 	}
-	
+
 }
 
-module.exports = LinkedIndex;
+class Pagination extends React.Component {
+  	
+	componentWillMount(){
+		this.state = this._getState();		
+	}
+	
+	_getState() {
+		return LibraryStore.getAll().page;
+	}
+
+	componentDidMount(){	
+		this.changeListener = this._onChange.bind(this);	
+		LibraryStore.addChangeListener(this.changeListener);
+	}
+
+	_onChange(){	
+		let newState = this._getState();
+		this.setState(newState);		
+	}
+	
+	componentWillUnmount(){
+		LibraryStore.removeChangeListener(this.changeListener);
+	}
+  
+  render() {
+	
+	let content = <p>(end of list)</p>;
+	
+	if(this.state.hasNextPage){
+		content = <button onClick={this.props.loadMore}>Load More {this.state.currentPage} of {this.state.numberOfPages}</button>;
+	}
+	
+    return (	
+		<div>{content}</div>
+    )
+	
+  }
+
+}
+
+module.exports = LibraryIndex;

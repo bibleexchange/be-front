@@ -3,6 +3,13 @@ import bluebird from 'bluebird';
 import AppConstants from './AppConstants';
 import SessionStore from '../stores/SessionStore'; 
 
+const options = {
+	url: '',
+	data: {},
+	method: "GET",
+	headers: {}			
+};
+
 class RequestService {
 
 /* Session & User Authorization Stuff*/
@@ -64,7 +71,11 @@ class RequestService {
 	}
 	
 	getChapter(id) {
-		let URL = AppConstants.BASE_URL+ "/graphql?query=query+FetchBibleChapter{biblechapters(id:\""+id+"\"){id,next,previous,orderBy,reference,url,book{id,n},verses{id,b,c,v,body,url}}}";
+		let verseFields = "verses{id,body,b,c,v,reference,url,chapterURL}";
+		let bookFields = "book{id,n,t,g}";
+		let noteFields = "notes{id,body,object_type,relatedObject,verse,user{username}}";
+		
+		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchBibleChapter{biblechapters(id:\""+id+"\"){id,reference,next,previous,orderBy,"+verseFields+","+bookFields+","+noteFields+"}}";
 	
 		let options = {
 			url: URL,
@@ -133,12 +144,16 @@ class RequestService {
 		return this.get(options);
 	} 
 	
-	getNotebooks(page=1){
+	getNotebooks(page=1,perPage=10){
 		
-		let object = "page: \""+page+"\"";
-		let fields = "id,title,bible_verse_id,notes{id,body},user{id},url";
+		let qOrM = 'query';
+		let rootType = "notebooks";
+		let rootArgs = "page: "+page+ ",perpage:"+perPage;
+		let fields = "id,title,bible_verse_id,notes{id,body},owner{username},url";		
+		let otherObjects = ",pageinfo(type:%22notebooks%22,page:"+page+",perpage:"+perPage+"){currentPage,numberOfPages,hasNextPage,perPage,hasPreviousPage,perPage}";
+		let queryName = "FetchNotebooks";
 		
-		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchNotebooks{notebooks("+object+"){"+fields+"}}";
+		let URL = AppConstants.BASE_URL+"/graphql?query="+qOrM+"+"+queryName+"{"+rootType+"("+rootArgs+"){"+fields+"}"+otherObjects+"}";
 
 		let options = {
 			url: URL,
@@ -152,7 +167,7 @@ class RequestService {
 	getNotebook(id){
 		
 		let object = "id: \""+id+"\"";
-		let fields = "id,title,bible_verse_id,notes{id,body,verse},user{id},url";
+		let fields = "id,title,bible_verse_id,notes{id,body,verse,object_type,relatedObject},owner{username},url";
 		
 		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchNotebook{notebooks("+object+"){"+fields+"}}";
 
@@ -172,7 +187,8 @@ class RequestService {
 		  request.get(
 			{
 			  url: options.url,
-			  json: true
+			  json: true,
+			  headers:options.headers
 			},
 			(err, response, body) => {
 			  if(err){

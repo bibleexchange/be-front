@@ -54,7 +54,8 @@ module.exports = {
 	  // and then inline them as data64 URLs
 	  test: /\.(png|jpg|svg)/,
 	  loaders: ['url', 'image-webpack'],
-	}
+	},
+	{ test: /\.(yml|md|txt|tpl)/, loader: "raw-loader?brfs" }
 	]
   },
   node: {fs: 'empty', net: 'empty', tls: 'empty'},

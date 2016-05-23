@@ -13,7 +13,7 @@ create: (directive) => {
 	{ id: id,
       text: text
     });
-  },
+  }, 
 
   destroy: (id) => {
     dispatch(ActionTypes.NOTE_DESTROY_FROM_NOTEBOOK,id);
