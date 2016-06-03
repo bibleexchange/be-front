@@ -5,7 +5,7 @@ import { Route, Link } from 'react-router';
 import UserSessionControl from './UserSessionControl';
 import SessionActionCreators from '../actions/SessionActionCreators';
 import AppConstants from '../util/AppConstants';
-import BeLogo from 'Svg/BeLogo';
+import BeLogo from './Svg/BeLogo';
 import { Navbar } from 'react-bootstrap';
 
 require('../stylesheets/app.scss'); 
