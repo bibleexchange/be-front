@@ -24,7 +24,7 @@ function startAppServer(callback) {
  var compiler = webpack(config);
  appServer = new WebpackDevServer(compiler,	
 	{
-		proxy: { "/graphql" :"http://localhost:"+GRAPHQL_PORT+"/graphql"},
+		proxy: { "/graphql/query" :"http://localhost:"+GRAPHQL_PORT+"/graphql/query"},
 		hot: true,
 		historyApiFallback: true
 	});

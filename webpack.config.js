@@ -6,7 +6,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const APP_PORT = 3000;
-const GRAPHQL_PORT = 80;
+const GRAPHQL_PORT = '';
 
 module.exports = {
 	appPort:APP_PORT,

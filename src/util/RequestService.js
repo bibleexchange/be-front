@@ -14,8 +14,8 @@ class RequestService {
 
 /* Session & User Authorization Stuff*/
  login(email, password) {
-	 //  /graphql?query=mutation+UserSession{userSession(email:%22sgrjr@deliverance.me%22,password:%221230happy%22){id,email}}
-	let URL = AppConstants.BASE_URL+"/graphql?query=mutation+UserSession{userSession(email:\""+email+"\",password:\""+password+"\"){id,email,firstname,token,gravatar,unreadNotifications{id,body}}}";
+	 //  /graphql/query?query=mutation+UserSession{userSession(email:%22sgrjr@deliverance.me%22,password:%221230happy%22){id,email}}
+	let URL = AppConstants.BASE_URL+"/graphql/query?query=mutation+UserSession{userSession(email:\""+email+"\",password:\""+password+"\"){id,email,firstname,token,gravatar,unreadNotifications{id,body}}}";
 
 		let options = {
 			url: URL,
@@ -29,7 +29,7 @@ class RequestService {
   signup(email, password, extra) {
 	
 	let options = {
-		url: '/graphql?query=mutation+User{addUser(data:{email:"'+email+'",userId:"ID!",password:"'+password+'"})}',
+		url: '/graphql/query?query=mutation+User{addUser(data:{email:"'+email+'",userId:"ID!",password:"'+password+'"})}',
 		data: {email, password, extra},
 		method: "POST"
 	};
@@ -39,8 +39,8 @@ class RequestService {
   }
 
     fetch(token) {
-	 // /graphql?query=mutation+UserSession{userSession(token:"__TOKEN_HERE__"){id,email,token}}
-	let URL = AppConstants.BASE_URL+"/graphql?query=mutation+UserSession{userSession(token:\""+token+"\"){id,email,firstname,token,gravatar,unreadNotifications{id,body}}}";
+	 // /graphql/query?query=mutation+UserSession{userSession(token:"__TOKEN_HERE__"){id,email,token}}
+	let URL = AppConstants.BASE_URL+"/graphql/query?query=mutation+UserSession{userSession(token:\""+token+"\"){id,email,firstname,token,gravatar,unreadNotifications{id,body}}}";
 
 		let options = {
 			url: URL,
@@ -59,7 +59,7 @@ class RequestService {
 		let bookFields = "book{id,n,t,g}";
 		let noteFields = "notes{id,body,object_type,relatedObject,verse,user{username}}";
 		
-		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchBibleChapter{biblechapters(reference:\""+ref+"\"){id,reference,next,previous,orderBy,"+verseFields+","+bookFields+","+noteFields+"}}";
+		let URL = AppConstants.BASE_URL+"/graphql/query?query=query+FetchBibleChapter{biblechapters(reference:\""+ref+"\"){id,reference,next,previous,orderBy,"+verseFields+","+bookFields+","+noteFields+"}}";
 		
 		let options = {
 			url: URL,
@@ -75,7 +75,7 @@ class RequestService {
 		let bookFields = "book{id,n,t,g}";
 		let noteFields = "notes{id,body,object_type,relatedObject,verse,user{username}}";
 		
-		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchBibleChapter{biblechapters(id:\""+id+"\"){id,reference,next,previous,orderBy,"+verseFields+","+bookFields+","+noteFields+"}}";
+		let URL = AppConstants.BASE_URL+"/graphql/query?query=query+FetchBibleChapter{biblechapters(id:\""+id+"\"){id,reference,next,previous,orderBy,"+verseFields+","+bookFields+","+noteFields+"}}";
 	
 		let options = {
 			url: URL,
@@ -89,7 +89,7 @@ class RequestService {
 	////VERSES
 	
 	bibleVerseByReference(ref) {
-		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchBibleVerse{bibleverses(reference:\""+ref+"\"){id,body,b,c,v,reference,url,chapterURL,notes{id,body,object_type,relatedObject,user{username}}}}";
+		let URL = AppConstants.BASE_URL+"/graphql/query?query=query+FetchBibleVerse{bibleverses(reference:\""+ref+"\"){id,body,b,c,v,reference,url,chapterURL,notes{id,body,object_type,relatedObject,user{username}}}}";
 		console.log(URL);
 		
 		let options = {
@@ -103,7 +103,7 @@ class RequestService {
 	
 	/// NOTES
 	getNote(id) {
-		let URL = AppConstants.BASE_URL+ "/graphql?query=query+FetchNote{notes(id:\""+id+"\"){id,body,object_type,relatedObject,bible_verse_id}}";
+		let URL = AppConstants.BASE_URL+ "/graphql/query?query=query+FetchNote{notes(id:\""+id+"\"){id,body,object_type,relatedObject,bible_verse_id}}";
 
 		let options = {
 			url: URL,
@@ -116,7 +116,7 @@ class RequestService {
 	
 	/// App
 	bookMarkIt(urlToSave, token) {
-		let URL = AppConstants.BASE_URL+"/graphql?query=mutation+UserBookmark{userBookmark(token:\""+token+"\",url:\""+urlToSave+"\",action:\"create\"){url,user{id}}}";
+		let URL = AppConstants.BASE_URL+"/graphql/query?query=mutation+UserBookmark{userBookmark(token:\""+token+"\",url:\""+urlToSave+"\",action:\"create\"){url,user{id}}}";
 
 		let options = {
 			url: URL,
@@ -133,7 +133,7 @@ class RequestService {
 		console.log(object);
 		let fields = "id,bible_verse_id";
  
-		let URL = AppConstants.BASE_URL+"/graphql?query=mutation+NoteCreate{noteCreate("+object+"){"+fields+"}}";
+		let URL = AppConstants.BASE_URL+"/graphql/query?query=mutation+NoteCreate{noteCreate("+object+"){"+fields+"}}";
 
 		let options = {
 			url: URL,
@@ -153,7 +153,7 @@ class RequestService {
 		let otherObjects = ",pageinfo(type:%22notebooks%22,page:"+page+",perpage:"+perPage+"){currentPage,numberOfPages,hasNextPage,perPage,hasPreviousPage,perPage}";
 		let queryName = "FetchNotebooks";
 		
-		let URL = AppConstants.BASE_URL+"/graphql?query="+qOrM+"+"+queryName+"{"+rootType+"("+rootArgs+"){"+fields+"}"+otherObjects+"}";
+		let URL = AppConstants.BASE_URL+"/graphql/query?query="+qOrM+"+"+queryName+"{"+rootType+"("+rootArgs+"){"+fields+"}"+otherObjects+"}";
 
 		let options = {
 			url: URL,
@@ -169,7 +169,7 @@ class RequestService {
 		let object = "id: \""+id+"\"";
 		let fields = "id,title,bible_verse_id,notes{id,body,verse,object_type,relatedObject},owner{username},url";
 		
-		let URL = AppConstants.BASE_URL+"/graphql?query=query+FetchNotebook{notebooks("+object+"){"+fields+"}}";
+		let URL = AppConstants.BASE_URL+"/graphql/query?query=query+FetchNotebook{notebooks("+object+"){"+fields+"}}";
 
 		let options = {
 			url: URL,

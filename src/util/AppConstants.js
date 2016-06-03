@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'http://localhost';
 var idbSupported = false;
  
 if("indexedDB" in window) {
