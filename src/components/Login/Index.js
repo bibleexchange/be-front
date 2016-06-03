@@ -1,7 +1,7 @@
 import React from 'react';
 import SessionActionCreators from '../../actions/SessionActionCreators';
 
-class SignupIndex extends React.Component {
+class Index extends React.Component {
 
   constructor() {
     super();
@@ -88,4 +88,4 @@ class SignupIndex extends React.Component {
   }
 }
 
-module.exports = SignupIndex;
+module.exports = Index;

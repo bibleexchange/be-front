@@ -1,6 +1,4 @@
 import React from 'react';
-import Relay from 'react-relay';
-
 import SessionStore from '../stores/SessionStore';
 import ProfileStore from '../stores/ProfileStore';
 import { Route, Link } from 'react-router';
@@ -71,9 +69,9 @@ class App extends React.Component {
 					<span className="icon-bar"></span> 
 				</button>
 			  <Navbar.Brand>
-				 //<Link to="/">
+			  {/*<Link to="/">*/}
 					<BeLogo/>
-				  //</Link>
+				 {/*</Link>*/}
 			  </Navbar.Brand>
 			</Navbar.Header>
 			<div className="collapse navbar-collapse" id="myNavbar">
