@@ -7,6 +7,7 @@ import { Route, Link } from 'react-router';
 import UserSessionControl from './UserSessionControl';
 import SessionActionCreators from '../actions/SessionActionCreators';
 import AppConstants from '../util/AppConstants';
+import BeLogo from 'Svg/BeLogo';
 import { Navbar } from 'react-bootstrap';
 
 require('../stylesheets/app.scss'); 
@@ -16,7 +17,7 @@ require('../stylesheets/print.scss');
 require('../stylesheets/typography.scss');
 require('../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss');
 
-var beLogo = require('../static/images/be_logo.png');
+//var beLogo = require('../static/svg/be-logo.svg');
 
 class App extends React.Component {
 
@@ -70,10 +71,9 @@ class App extends React.Component {
 					<span className="icon-bar"></span> 
 				</button>
 			  <Navbar.Brand>
-				 <Link to="/">
-					<img className="pull-left" style={{marginLeft:"15px"}} src={beLogo} alt="Bible exchange logo" /> 
-					{title}
-				  </Link>
+				 //<Link to="/">
+					<BeLogo/>
+				  //</Link>
 			  </Navbar.Brand>
 			</Navbar.Header>
 			<div className="collapse navbar-collapse" id="myNavbar">
