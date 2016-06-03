@@ -1,19 +1,49 @@
 @import "config/variables";
 
 .textbook {
-	margin: 0 -15px 0 -15px;
+	margin-left: -15px;
+	margin-right: -15px;
+	padding: 0;
 	counter-reset: h2;
 	.content h1 {
 		display:none;
 	}
+	
+	.highlights h1{font-size:1rem;}
+
+	.emb-outline h1{font-size:1rem;}
+	.emb-outline h2{font-size:1rem;}
+	.emb-outline h3{font-size:1rem;}
+	.emb-outline h4{font-size:.5rem;}
+	.emb-outline h5{font-size:1rem;}
+	.emb-outline h6{font-size:1rem;}
+
+	#cover h1{font-size:2.5rem;}
+	#cover h2{font-size:1.25rem;}
+	#cover h3{font-size:.8rem;}
+	#cover h4{font-size:.8rem;}
+
+	h1 {font-size: 3rem; line-height: 3.2rem;}
+
+	blockquote:before, ,p.subtitle:before {font-size: 4em; line-height: 0.1rem;}
+	
+	table h1 {
+		text-align:center;
+		margin:0;
+		padding:0;
+		}
+	
+	p {
+		font-family: $font-sans;
+		font-weight: 300;
+		font-size: 1.6rem;
+		line-height: 2.7rem;
+		margin: 1.5rem 30px 0px 30px;
+	}
+
 }
-.textbook p {
-	font-family: $font-sans;
-	font-weight: 300;
-	font-size: 1.6rem;
-	line-height: 2.7rem;
-	margin: 1.5rem 30px 0px 30px;
-}
+
+
 .study-default-image {
 	width: 100%;
 }
@@ -136,7 +166,7 @@ p.long-description {
 .study-sharing {
 		width:100%;
 	}
-	
+
 @media (min-width: 768px) {	
 	.textbook p, .textbook h3, .textbook h4, .textbook h5, .textbook ul, .textbook blockquote {
 		margin-left: 12rem;

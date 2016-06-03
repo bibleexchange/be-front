@@ -13,7 +13,7 @@ class BaseStore extends EventEmitter {
 
   emitChange() {
 	console.log('store emitted change!', this);
-    this.emit('CHANGE');
+    process.nextTick(() => this.emit('CHANGE'));
   }
 
   addChangeListener(cb) {

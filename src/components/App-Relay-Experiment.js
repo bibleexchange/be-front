@@ -18,7 +18,7 @@ require('../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss');
 
 var beLogo = require('../static/images/be_logo.png');
 
-class App extends React.Component {
+class AppR extends React.Component {
 
   componentWillMount(){
 	  
@@ -86,8 +86,28 @@ class App extends React.Component {
   }	
 }
 
-App.contextTypes = {
+AppR.contextTypes = {
     router: React.PropTypes.object.isRequired
 };
 
-module.exports = App;
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Note</h1>
+        <ul>
+          {/*this.props.user.notes.edges.map(edge =>
+            <li key={edge.node.id}>{edge.node.text} (ID: {edge.node.id})</li>
+          )*/}
+        </ul>
+      </div>
+    );
+  }
+}
+//http://localhost:3000/graphql?query=
+export default Relay.createContainer(App, {
+  fragments: {
+    user: () => Relay.QL`
+      query+GetUser{   users(id: "1") {     firstname } }`,
+  },
+});

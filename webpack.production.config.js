@@ -55,7 +55,9 @@ module.exports = {
 	  }
     },
 	{test: /\.json?$/,loader: 'json' },
-	{test: /\.scss$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader","postcss-loader","sass-loader") },
+	{
+	 test: /\.s?css$/,
+     loader: ExtractTextPlugin.extract('style', 'css?sourceMap!sass!postcss?parser=postcss-scss') },
 	{
 	test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
 	loader: "url?limit=10000"

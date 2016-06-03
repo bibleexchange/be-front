@@ -11,7 +11,7 @@ class DefaultNote extends React.Component {
 			<Grid fluid>
 			
 			<Row>
-				<Col xs={12} md={8} mdOffset={2} >
+				<Col xs={12}>
 					<h2><i className="glyphicon glyphicon-chat"></i> {note.body}</h2>
 					<Link to={note.verse.url}>{note.verse.reference}</Link> {note.verse.t}
 				</Col>

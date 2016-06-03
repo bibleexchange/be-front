@@ -40,7 +40,33 @@ const github = new GitHubApi({
 export default {
    	getPreview: (url) => {
 		
-		let options = {
+		if(getIt(url)){
+			console.log("Retrieving Article from Storage");
+			let storedRespone = getIt(url);
+			
+			let type = ActionTypes.PREVIEW_SUCCESS;
+			let action = {url:url, body: storedRespone};
+
+			let promise = getIt(url);
+		
+			dispatchAsync(promise, {
+			  request: ActionTypes.FETCH_CHAPTER,
+			  success: ActionTypes.ADD_CHAPTER,
+			  failure: ActionTypes.FETCH_FAILED
+			}, { id });
+			
+			dispatch(type, action);
+			
+		}else{
+			remoteRequest(url);
+		}
+		
+
+	}
+} 
+
+function remoteRequest(url){
+			let options = {
 			method: "GET",
 			url:url
 		};
@@ -54,11 +80,11 @@ export default {
 
 			  // Response handlers.
 			  xhr.onload = function() {
-				  console.log('request success',xhr);
 				  
 				  let type = ActionTypes.PREVIEW_SUCCESS;
 				  let action = {url:url, body: xhr.response}
 				  
+				  storeIt(url,xhr.response);
 				  dispatch(type, action);
 			  };
 
@@ -67,5 +93,18 @@ export default {
 			  };
 
 			  xhr.send();
+}
+
+function storeIt(key,object){
+	if(typeof(Storage) !== "undefined") {
+		localStorage.setItem(key, object);
+		return true;
+	} else {
+		console.log(" Sorry! No Web Storage support..");
+		return false;
 	}
-} 
+}
+
+function getIt(key){
+	return localStorage.getItem(key);
+}

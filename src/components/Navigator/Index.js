@@ -6,7 +6,7 @@ import SearchActionCreators from '../../actions/SearchActionCreators';
 import NotebookStore from '../../stores/NotebookStore';
 import SearchStore from '../../stores/SearchStore';
 
-import { Grid } from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 class NavigationIndex extends React.Component {
 	
@@ -53,16 +53,22 @@ class NavigationIndex extends React.Component {
 	}
 	
     return (	
-		<Grid fluid className="redBG" style={{textAlign:'center', marginLeft:'-15px', marginRight:'-15px'}}>
-			
-			{previous}
+		<Grid fluid className="greenBG" style={{textAlign:'center', marginLeft:'-15px', marginRight:'-15px'}}>
+			<Row>
+				<Col sm={4} >
+					{previous}
+				</Col>
+					{/*<Search term={this.state.search.term} changeHandler={this.searchChangeHandler} submitHandler={this.searchSubmitHandler.bind(this)} buttonStyle={style}/>*/}
+				
+				<Col sm={4} >				
+					<Picker pages={this.props.pages} style={style} baseUrl={this.props.baseUrl}/>
+				</Col>	
+				
+				<Col sm={4} >
+					{next}
+				</Col>	
 
-				{/*<Search term={this.state.search.term} changeHandler={this.searchChangeHandler} submitHandler={this.searchSubmitHandler.bind(this)} buttonStyle={style}/>*/}
-
-			
-			{next}
-					
-			<Picker pages={this.props.pages} style={style} baseUrl={this.props.baseUrl}/>
+			</Row>
 		</Grid>
     )
   }

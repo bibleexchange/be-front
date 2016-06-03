@@ -7,7 +7,7 @@ import Page from '../Notes/Note';
 import Navigator from '../Navigator';
 import AppConstants from '../../util/AppConstants';
 
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Glyphicon } from 'react-bootstrap';
  
 var twitterLogo = require('../../static/svg/twitter-logo.svg');
 
@@ -83,15 +83,12 @@ class NotebookIndex extends React.Component {
   }
 
 	loading(){
-		console.log('loading data...');
 		this.state.content = <h2 style={{textAlign:'center'}}>Loading...<Loading /></h2>;
 	}
 	error(){
-		console.log('Something went wrong :(', this.state.notebook.error);
 		this.state.content = this.state.notebook.error.message + " ------- <a href='" + this.state.notebook.error.documentation_url + "'>Read More</a>";
 	}
-	success(currentPage){
-		console.log('notebook ready');		
+	success(currentPage){		
 		this.state.content = <Template data={this.state.store.data} page={this.state.store.data.notes[currentPage-1]} currentPage={currentPage} baseUrl={this.baseUrl} maxPages={this.maxPages}/>;
 	}
 	
@@ -101,16 +98,14 @@ class Template extends React.Component {
 	
   render() {
 	
-	console.log(this.props);
-	
     return (
 		<Grid fluid>
-			<Row id="studies" className="site">
-				<Col id="sidebar" xs={12} md={3} style={{float: "left"}}>
+			<Row>
+				<Col id="sidebar" md={3} >
 					<Navigator data={this.props.data} pages={this.props.data.notes} maxPages={this.props.maxPages} currentPage={this.props.currentPage} baseUrl={this.props.baseUrl}/>
 					<Sidebar data={this.props.data} page={this.props.page}/>
 				</Col>
-				<Col xs={12} md={9} id="content" className="site-content"  style={{float: "left"}}>					
+				<Col md={9} id="content">					
 					<Main page={this.props.page} />
 					{/*
 					<div className="panel panel-default panel-study-green">
@@ -123,8 +118,6 @@ class Template extends React.Component {
 					</div>		
 					*/}
 				</Col>
-				
-				
 			</Row>			
 		</Grid>
 		
@@ -136,7 +129,7 @@ class Template extends React.Component {
 class Sidebar extends React.Component {
 	
   render() {
-	
+
     return (
 					<div className="sidebar">
 						<div id="masthead" className="site-header" role="banner">		
@@ -146,7 +139,7 @@ class Sidebar extends React.Component {
 							<img className="study-default-image" src="http://bible.exchange/svg/be-logo.svg" name="Bible exchange" alt="Bible exchange" />
 							<a id="secondary-toggle" data-toggle="collapse" href="#sidebar-collapse" aria-expanded="false" aria-controls="collapseExample" className="visible-xs visible-sm">
 								<div className="sidebar-block greenBG">
-									<h2><span className="glyphicon glyphicon-menu-down" aria-hidden="true"></span></h2>
+									<h2><Glyphicon glyph="menu-down" /></h2>
 								</div>
 							</a>		
 						</div>
@@ -154,7 +147,9 @@ class Sidebar extends React.Component {
 						<div id="secondary" className="secondary">
 							<div id="sidebar-collapse" className="collapse in">	
 								<div className="sidebar-block blueBG">
-									<Link to={this.props.page.verse.url}><h2><span className="glyphicon glyphicon-book" aria-hidden="true"></span> {this.props.page.verse.reference} {this.props.page.verse.t}</h2></Link>
+									<Link to={this.props.page.verse.url}><h2>
+									<Glyphicon glyph="book" />
+									 {this.props.page.verse.reference} {this.props.page.verse.t}</h2></Link>
 								</div>
 									
 								<div className="sidebar-block greenBG">
@@ -167,9 +162,8 @@ class Sidebar extends React.Component {
 									</div>					
 								</div>
 									
-								<div className="sidebar-block blueBG">	
-									<a href={this.props.page.relatedObject.url} >{this.props.page.relatedObject.url}</a>
-								</div>
+									{this.linkToRelated(this.props.page.relatedObject)}
+								
 								<div className="sidebar-block greenBG"></div>
 							</div>	
 						</div>
@@ -185,6 +179,14 @@ class Sidebar extends React.Component {
 	  return false;
   }
   
+  linkToRelated(r){
+	  if(r !== undefined){
+	  return (<div className="sidebar-block blueBG">	
+				<a href={this.props.page.relatedObject.url} >{this.props.page.relatedObject.url}</a>
+			</div>);
+	  }
+  }
+  
 }
 
 class Main extends React.Component {
@@ -194,7 +196,7 @@ class Main extends React.Component {
     return (<div className="textbook">		  
 				<div>
 					<div className="h1-box">
-						<h1><i className="glyphicon glyphicon-link"></i>{this.props.page.body}</h1>					
+						<h1><Glyphicon glyph="link" />{this.props.page.body}</h1>					
 						<div className="h1-underline"></div>
 						<div className="h1-underline"></div>
 						<div className="h1-underline"></div>
