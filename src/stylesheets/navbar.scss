@@ -12,6 +12,11 @@
 .navbar a {
 	color: $GRAY;
 }
+
+.navbar-brand {
+	height: auto;
+}
+
 .navbar-brand img {
 	width: 30px;
 	display: inline-block;
@@ -167,6 +172,3 @@ a:hover span.glyphicon.glyphicon-th-large {
 
 }
 
-.navbar-nav .btn-default {
-	
-}

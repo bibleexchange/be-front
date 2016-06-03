@@ -69,9 +69,9 @@ class App extends React.Component {
 					<span className="icon-bar"></span> 
 				</button>
 			  <Navbar.Brand>
-			  {/*<Link to="/">*/}
-					<BeLogo/>
-				 {/*</Link>*/}
+				  <Link to="/">
+					  <BeLogo/>
+				  </Link>
 			  </Navbar.Brand>
 			</Navbar.Header>
 			<div className="collapse navbar-collapse" id="myNavbar">
