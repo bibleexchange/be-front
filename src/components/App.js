@@ -18,7 +18,7 @@ class TodoApp extends Component {
 		</h1>
     );
   }
-}
+} 
 
 export default Relay.createContainer(TodoApp, {
   initialVariables: {
