@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import browserHistory from 'react-router/lib/browserHistory';
-import Router from 'react-router/lib/Router';
-import routes from './routes';
+import Relay from 'react-relay';
 
-const Routes = (
- <Router history={browserHistory} >
-   { routes }
- </Router>
+import App from './components/App';
+import AppHomeRoute from './routes/AppHomeRoute';
+
+ReactDOM.render(
+  <Relay.RootContainer
+    Component={App}
+    route={new AppHomeRoute()}
+  />,
+  document.getElementById('root')
 );
-
-const app = document.getElementById('root');
-ReactDOM.render(Routes, app);

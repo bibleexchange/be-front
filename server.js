@@ -6,11 +6,12 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('./webpack.config.js');
 const chokidar = require('chokidar');
 const express = require('express');
-const graphQLHTTP = require('express-graphql');
+
+import graphQLHTTP from 'express-graphql';
+
 const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
-const clean = require('require-clean').clean;
 const exec = require('child_process').exec;
 
 const APP_PORT = config.appPort;
@@ -18,6 +19,8 @@ const GRAPHQL_PORT = config.graphqlPort;
 
 let graphQLServer;
 let appServer;
+
+import {schema} from './data/schema';
 
 function startAppServer(callback) {
   // Serve the Relay app
@@ -31,6 +34,7 @@ function startAppServer(callback) {
  
   // Serve static resources
   appServer.use('/', express.static(path.resolve(__dirname, 'dist')));
+
   appServer.use(webpackHotMiddleware(compiler));
   
   appServer.listen(APP_PORT, () => {
@@ -41,16 +45,15 @@ function startAppServer(callback) {
   });
 }
 
-/*
+
 function startGraphQLServer(callback) {
   // Expose a GraphQL endpoint
-  clean('./data/schema');
-  const {Schema} = require('./data/schema');
+
   const graphQLApp = express();
   graphQLApp.use('/', graphQLHTTP({
     graphiql: true,
     pretty: true,
-    schema: Schema,
+    schema: schema,
   }));
   graphQLServer = graphQLApp.listen(GRAPHQL_PORT, () => {
     console.log(
@@ -61,18 +64,17 @@ function startGraphQLServer(callback) {
     }
   });
 }
-*/
 
 function startServers(callback) {
   // Shut down the servers
   if (appServer) {
     appServer.listeningApp.close();
   }
-/*
+
   if (graphQLServer) {
     graphQLServer.close();
   }
-*/
+
   // Compile the schema
   exec('npm run update-schema', (error, stdout) => {
     console.log(stdout);
@@ -83,7 +85,7 @@ function startServers(callback) {
         callback();
       }
     }
-    //startGraphQLServer(handleTaskDone);
+    startGraphQLServer(handleTaskDone);
     startAppServer(handleTaskDone);
   });
 }

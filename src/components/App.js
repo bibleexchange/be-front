@@ -1,91 +1,70 @@
-import React from 'react';
-import SessionStore from '../stores/SessionStore';
-import ProfileStore from '../stores/ProfileStore';
-import { Route, Link } from 'react-router';
-import UserSessionControl from './UserSessionControl';
-import SessionActionCreators from '../actions/SessionActionCreators';
-import AppConstants from '../util/AppConstants';
-import BeLogo from './Svg/BeLogo';
-import { Navbar } from 'react-bootstrap';
+'use strict';
 
-require('../stylesheets/app.scss'); 
-require('../stylesheets/banner.scss');
-require('../stylesheets/images.scss');
-require('../stylesheets/print.scss');
-require('../stylesheets/typography.scss');
-require('../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss');
+import Relay from 'react-relay';
+import React, { Component } from 'react';
 
-//var beLogo = require('../static/svg/be-logo.svg');
-
-class App extends React.Component {
-
-  componentWillMount(){
-	  
-	 this.state = this._getState();
-	  
-	 let token = SessionStore.hasJWT();
-		
-		if(token){
-			console.log('&*&*&* AUTO CHECKING USER WITH LOCAL STORAGE.');
-			SessionActionCreators.getUser(token);
-		} 
+class TodoApp extends Component {
+  constructor(props, context) {
+    super(props, context);
+    this._handleStatusChange = this._handleStatusChange.bind(this);
   }
-  
-  _getState() {
-		return {
-			user: {
-				session: SessionStore.getState(),
-				profile: ProfileStore.getState()
-				}
-			};
+  _handleStatusChange(status) {
+    this.props.relay.setVariables({status});
   }
-  
- componentDidMount() {
-    this.changeListener = this._onChange.bind(this);
-    SessionStore.addChangeListener(this.changeListener);
-	ProfileStore.addChangeListener(this.changeListener);
-  }
-
-   _onChange() {
-    let newState = this._getState();
-    this.setState(newState);	
-  }
-	
-  componentWillUnmount() {
-    SessionStore.removeChangeListener(this.changeListener);
-	ProfileStore.removeChangeListener(this.changeListener);
-  }
-
-  render() {  
-	let title = AppConstants.SITE_TITLE;
-	
+  render() {
     return (
-      <div> 
-	    <Navbar animated staticTop fluid style={{marginBottom: 0}}>
-			<Navbar.Header pullLeft>
-				<button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-					<span className="icon-bar"></span>
-					<span className="icon-bar"></span>
-					<span className="icon-bar"></span> 
-				</button>
-			  <Navbar.Brand>
-			  {/*<Link to="/">*/}
-					<BeLogo/>
-				 {/*</Link>*/}
-			  </Navbar.Brand>
-			</Navbar.Header>
-			<div className="collapse navbar-collapse" id="myNavbar">
-				<UserSessionControl url={this.props.location.pathname} user={this.state.user} route={this.props.route}/>
-			</div>
-		  </Navbar>
-		{this.props.children}
-      </div>
+		<h1>
+		{this.props.totalCount}
+		</h1>
     );
-  }	
+  }
 }
 
-App.contextTypes = {
-    router: React.PropTypes.object.isRequired
-};
+export default Relay.createContainer(TodoApp, {
+  initialVariables: {
+    status: 'any',
+  },
+  fragments: {
+    viewer: variables => Relay.QL`
+      fragment on User {
+        totalCount
+      }
+    `,
+  },
+});
 
-module.exports = App;
+const styles = {
+  actionList: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 15,
+  },
+  container: {
+    backgroundColor: '#F5F5F5',
+    flex: 1,
+    paddingTop: 20,
+  },
+  footer: {
+    height: 10,
+    paddingHorizontal: 15,
+  },
+  header: {
+    alignSelf: 'center',
+    color: 'rgba(175, 47, 47, 0.15)',
+    fontFamily: 'sans-serif-light',
+    fontSize: 100,
+    fontWeight: '100',
+  },
+  list: {
+    borderTopColor: 'rgba(0,0,0,0.1)',
+    borderTopWidth: 1,
+    flex: 1,
+    shadowColor: 'black',
+    shadowOffset: {
+      height: -2,
+    },
+    shadowOpacity: 0.03,
+    shadowRadius: 1,
+  },
+};

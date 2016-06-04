@@ -1,12 +1,15 @@
-import Relay from 'react-relay';
+'use strict';
 
-export default class extends Relay.Route {
+import Relay, {
+  Route,
+} from 'react-relay';
+
+export default class TodoAppRoute extends Route {
+  static paramDefinitions = {
+    status: {required: false},
+  };
   static queries = {
-    user: () => Relay.QL`
-      query {
-        user
-      }
-    `,
+    viewer: () => Relay.QL`query { viewer }`,
   };
   static routeName = 'AppHomeRoute';
 }

@@ -6,7 +6,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const APP_PORT = 3000;
-const GRAPHQL_PORT = '';
+const GRAPHQL_PORT = 3030;
 
 module.exports = {
 	appPort:APP_PORT,
@@ -80,7 +80,6 @@ module.exports = {
 	]
   },
   node: {fs: 'empty', net: 'empty', tls: 'empty'},
-  sassLoader: {includePaths: [path.resolve(__dirname, "./src/stylesheets")]},
   postcss: [ autoprefixer ],
   resolve: {
     extensions: ['', '.js', '.scss'],
