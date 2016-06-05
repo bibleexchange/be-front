@@ -21,7 +21,6 @@ module.exports = {
 	  modules: false
 	},
     devtool: 'eval-source-map',
-	hot: true,
     historyApiFallback: true,
   entry: [
     'babel-polyfill',
@@ -39,9 +38,10 @@ module.exports = {
       inject: 'body',
       filename: 'index.html'
     }),
+	new HtmlWebpackPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+	new webpack.HotModuleReplacementPlugin(),
+	new webpack.NoErrorsPlugin(),
     new webpack.DefinePlugin({'process.env.NODE_ENV': JSON.stringify('development')})
   ],
   module: {
@@ -49,8 +49,7 @@ module.exports = {
 	{
       test: /\.js?$/,
       exclude: /node_modules/,
-      loader: 'babel',
-	  query: {presets: ["react","es2015","stage-0", "react-hmre"], plugins:[]}
+      loaders: ['react-hot','babel']
 	},
 	{test: /\.json?$/,loader: 'json' },
 	{

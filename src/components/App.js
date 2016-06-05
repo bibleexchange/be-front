@@ -3,7 +3,7 @@
 import Relay from 'react-relay';
 import React, { Component } from 'react';
 
-class TodoApp extends Component {
+class App extends Component {
   constructor(props, context) {
     super(props, context);
     this._handleStatusChange = this._handleStatusChange.bind(this);
@@ -20,7 +20,7 @@ class TodoApp extends Component {
   }
 } 
 
-export default Relay.createContainer(TodoApp, {
+export default Relay.createContainer(App, {
   initialVariables: {
     status: 'any',
   },
@@ -32,6 +32,7 @@ export default Relay.createContainer(TodoApp, {
     `,
   },
 });
+
 
 const styles = {
   actionList: {

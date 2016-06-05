@@ -1,42 +1,35 @@
 'use strict';
 
 // Module dependencies
-const webpackMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
-const config = require('./webpack.config.js');
-const chokidar = require('chokidar');
-const express = require('express');
-
+import chokidar from 'chokidar';
+import express from 'express';
 import graphQLHTTP from 'express-graphql';
+import path from 'path';
+import webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server';
+import {clean} from 'require-clean';
+import {exec} from 'child_process';
+import {schema} from './data/schema';
 
-const path = require('path');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
-const exec = require('child_process').exec;
-
+const config = require('./webpack.config.js');
 const APP_PORT = config.appPort;
 const GRAPHQL_PORT = config.graphqlPort;
 
 let graphQLServer;
 let appServer;
 
-import {schema} from './data/schema';
-
 function startAppServer(callback) {
   // Serve the Relay app
- var compiler = webpack(config);
- appServer = new WebpackDevServer(compiler,	
-	{
-		proxy: { "/graphql/query" :"http://localhost:"+GRAPHQL_PORT+"/graphql/query"},
-		hot: true,
-		historyApiFallback: true
-	});
- 
+  var compiler = webpack(config);
+
+  appServer = new WebpackDevServer(compiler, {
+    contentBase: '/src/',
+    proxy: {'/graphql': `http://localhost:${GRAPHQL_PORT}`},
+    publicPath: '/dist/',
+    stats: {colors: true}
+  });
   // Serve static resources
   appServer.use('/', express.static(path.resolve(__dirname, 'dist')));
-
-  appServer.use(webpackHotMiddleware(compiler));
-  
   appServer.listen(APP_PORT, () => {
     console.log(`App is now running on http://localhost:${APP_PORT}`);
     if (callback) {
@@ -45,15 +38,15 @@ function startAppServer(callback) {
   });
 }
 
-
 function startGraphQLServer(callback) {
   // Expose a GraphQL endpoint
-
+  clean('./data/schema');
+  const {Schema} = require('./data/schema');
   const graphQLApp = express();
   graphQLApp.use('/', graphQLHTTP({
     graphiql: true,
     pretty: true,
-    schema: schema,
+    schema: Schema,
   }));
   graphQLServer = graphQLApp.listen(GRAPHQL_PORT, () => {
     console.log(
@@ -70,7 +63,6 @@ function startServers(callback) {
   if (appServer) {
     appServer.listeningApp.close();
   }
-
   if (graphQLServer) {
     graphQLServer.close();
   }
